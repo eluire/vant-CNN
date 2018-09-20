@@ -7,7 +7,7 @@
 
 using namespace cv;
 using namespace std;
-
+//função para identificar o video com um número de ordem crescente de gravação
 string intToString(int number){
 
 
@@ -23,23 +23,24 @@ int main(int argc, char* argv[])
 	int inc=0;
 	bool firstRun = true;
 
-	VideoCapture cap(0); // open the video camera no. 0
-	VideoWriter oVideoWriter;//create videoWriter object, not initialized yet
+	VideoCapture cap; //obj VideoCapture criado
+	VideoWriter oVideoWriter;// obj videowriter criado e ainda não iniciado 
 
-	if (!cap.isOpened())  // if not success, exit program
+	cap.open("tcp://192.168.1.1:5555"); // capturar o fluxo de video disponibilizado na porta 5555 do drone
+	if (!cap.isOpened())  // chave para verificar se o fluxo foi capturado corretamente
 	{
-		cout << "ERROR: Cannot open the video file" << endl;
+		cout << "FAIL!!! nao foi capturado o fluxo de video" << endl;
 		return -1;
 	}
 
-	namedWindow("MyVideo",CV_WINDOW_AUTOSIZE); //create a window called "MyVideo"
+	namedWindow("Camera",CV_WINDOW_AUTOSIZE); //janela camera criada
 
-	double dWidth = cap.get(CV_CAP_PROP_FRAME_WIDTH); //get the width of frames of the video
-	double dHeight = cap.get(CV_CAP_PROP_FRAME_HEIGHT); //get the height of frames of the video
+	double dWidth = cap.get(CV_CAP_PROP_FRAME_WIDTH); //otendo a largura dos frames do video 
+	double dHeight = cap.get(CV_CAP_PROP_FRAME_HEIGHT); //otendo a largura dos frames do video 
 
 	cout << "Frame Size = " << dWidth << "x" << dHeight << endl;
 
-	//set framesize for use with videoWriter
+	//set framesize para usar como  videoWriter obj
 	Size frameSize(static_cast<int>(dWidth), static_cast<int>(dHeight));
 
 
@@ -48,19 +49,19 @@ int main(int argc, char* argv[])
 		if(startNewRecording==true){
 
 			
-			oVideoWriter  = VideoWriter("D:/MyVideo"+intToString(inc)+".avi", CV_FOURCC('D', 'I', 'V', '3'), 20, frameSize, true); //initialize the VideoWriter object 
-			//oVideoWriter  = VideoWriter("D:/MyVideo"+intToString(inc)+".avi", (int)cap.get(CV_CAP_PROP_FOURCC), 20, frameSize, true); //initialize the VideoWriter object 
+			oVideoWriter  = VideoWriter("Video"+intToString(inc)+".avi", CV_FOURCC('D', 'I', 'V', '3'), 20, frameSize, true); //inicializando VideoWriter obj 
+			 
 
 			recording = true;
 			startNewRecording = false;
-			cout<<"New video file created D:/MyVideo"+intToString(inc)+".avi "<<endl;
+			cout<<"Novo arquivo Video"+intToString(inc)+".avi criado"<<endl;
 
 
-			if ( !oVideoWriter.isOpened() ) //if not initialize the VideoWriter successfully, exit the program
+			if ( !oVideoWriter.isOpened() ) //Se o obj videoWriter nao for inicializado corretamente ele sai da aplicação 
 			{
-				cout << "ERROR: Failed to initialize video writing" << endl;
+				cout << "FAIL!! nao inicializou video writing obj" << endl;
 				getchar();
-				return -1;
+				return 0;
 			}
 
 		}
@@ -68,15 +69,15 @@ int main(int argc, char* argv[])
 
 		Mat frame;
 
-		bool bSuccess = cap.read(frame); // read a new frame from video
+		bool bSuccess = cap.read(frame); // lendo um novo filme do video
 
-		if (!bSuccess) //if not success, break loop
+		if (!bSuccess) //chave para verificar se o frame foi capturado
 		{
-			cout << "ERROR: Cannot read a frame from video file" << endl;
+			cout << "FAIL!! frame não capturado" << endl;
 			break;
 		}
 
-		//if we're in recording mode, write to file
+		//se estiver gravando escreva o frame 
 		if(recording){
 
 			oVideoWriter.write(frame);
@@ -87,24 +88,23 @@ int main(int argc, char* argv[])
 
 
 		}
-		imshow("MyVideo", frame); //show the frame in "MyVideo" window
+		imshow("Camera drone", frame); //Mostrando o frame na jenela Camera drone 
 
 
 		switch(waitKey(10)){
 
-		case 114:
-			//'r' has been pressed.
-			//toggle recording mode
+		case 112:
+			//tecla p apertada (pause)
 			recording =!recording;
 
 			if(firstRun == true){
 
-				cout << "New Recording Started" << endl;
-				oVideoWriter  = VideoWriter("D:/MyVideo0.avi", CV_FOURCC('D', 'I', 'V', '3'), 20, frameSize, true);
+				cout << "Nova gravação iniciada" << endl;
+				//oVideoWriter  = VideoWriter("Video0.avi", CV_FOURCC('D', 'I', 'V', '3'), 20, frameSize, true);
 
 				if ( !oVideoWriter.isOpened() ) 
 			{
-				cout << "ERROR: Failed to initialize video writing" << endl;
+				cout << "FAIL!! nao inicializou video writing obj" << endl;
 				getchar();
 				return -1;
 			}
@@ -112,24 +112,23 @@ int main(int argc, char* argv[])
 
 
 			}
-			else {if (!recording)cout << "Recording Stopped" << endl;
+			else {if (!recording)cout << "Gravação parada" << endl;
 
-			else cout << "Recording Started" << endl;
+			else cout << "Gravação iniciada" << endl;
 			}
 			break;
 
-		case 110:
-			//'n' has been pressed
+		case 114:
+			//'tecla r apertada (record)
 			//start new video file
 			startNewRecording = true;
-			cout << "New Recording Started" << endl;
-			//increment video file name
+			cout << "Nova gravação iniciada" << endl;
+			//incrementando o nome do video
 			inc+=1;
 			break; 
 		case 27:
-			//'esc' has been pressed
-			//exit program.
-			cout << "Exit Program" << endl;
+			//botão 'esc' precionado (sair da aplicação)
+			cout << "Sair" << endl;
 			return 0;
 
 
@@ -142,4 +141,3 @@ int main(int argc, char* argv[])
 	return 0;
 
 }
-////////////////////////////////////////////////////////////////////////////////////////////

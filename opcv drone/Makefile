@@ -123,32 +123,32 @@ track/fast:
 	$(MAKE) -f CMakeFiles/track.dir/build.make CMakeFiles/track.dir/build
 .PHONY : track/fast
 
-exemple.o: exemple.cpp.o
+test.o: test.cpp.o
 
-.PHONY : exemple.o
+.PHONY : test.o
 
 # target to build an object file
-exemple.cpp.o:
-	$(MAKE) -f CMakeFiles/track.dir/build.make CMakeFiles/track.dir/exemple.cpp.o
-.PHONY : exemple.cpp.o
+test.cpp.o:
+	$(MAKE) -f CMakeFiles/track.dir/build.make CMakeFiles/track.dir/test.cpp.o
+.PHONY : test.cpp.o
 
-exemple.i: exemple.cpp.i
+test.i: test.cpp.i
 
-.PHONY : exemple.i
+.PHONY : test.i
 
 # target to preprocess a source file
-exemple.cpp.i:
-	$(MAKE) -f CMakeFiles/track.dir/build.make CMakeFiles/track.dir/exemple.cpp.i
-.PHONY : exemple.cpp.i
+test.cpp.i:
+	$(MAKE) -f CMakeFiles/track.dir/build.make CMakeFiles/track.dir/test.cpp.i
+.PHONY : test.cpp.i
 
-exemple.s: exemple.cpp.s
+test.s: test.cpp.s
 
-.PHONY : exemple.s
+.PHONY : test.s
 
 # target to generate assembly for a file
-exemple.cpp.s:
-	$(MAKE) -f CMakeFiles/track.dir/build.make CMakeFiles/track.dir/exemple.cpp.s
-.PHONY : exemple.cpp.s
+test.cpp.s:
+	$(MAKE) -f CMakeFiles/track.dir/build.make CMakeFiles/track.dir/test.cpp.s
+.PHONY : test.cpp.s
 
 # Help Target
 help:
@@ -159,9 +159,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... track"
 	@echo "... edit_cache"
-	@echo "... exemple.o"
-	@echo "... exemple.i"
-	@echo "... exemple.s"
+	@echo "... test.o"
+	@echo "... test.i"
+	@echo "... test.s"
 .PHONY : help
 
 
