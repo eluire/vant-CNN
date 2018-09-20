@@ -1,0 +1,3 @@
+/home/mateus/opcv drone/CMakeFiles/rebuild_cache.dir
+/home/mateus/opcv drone/CMakeFiles/track.dir
+/home/mateus/opcv drone/CMakeFiles/edit_cache.dir
